@@ -1,0 +1,7 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.10.2"}
+        com.fulcrologic/fulcro {:mvn/version "3.4.17"}}
+ :aliases
+ {:serve {:main-opts ["-m" "shadow.cljs.devtools.cli" "watch" "main"]
+          :extra-deps {thheller/shadow-cljs                {:mvn/version "2.11.6"}
+                       binaryage/devtools                  {:mvn/version "1.0.0"}}}}}

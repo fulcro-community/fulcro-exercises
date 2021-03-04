@@ -1,0 +1,9 @@
+{
+  "name": "fulcro-exercises",
+  "version": "1.0.0",
+  "author": "Jakub Holý <jakubholy@jakubholy.net> (http://theholyjava.wordpress.com/)",
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}

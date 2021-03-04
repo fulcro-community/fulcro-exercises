@@ -1,0 +1,14 @@
+{:deps     {:aliases [:dev]}
+ :nrepl    {:port 9000}
+ :jvm-opts ["-Xmx2G"]
+ :dev-http {8000 "resources/public"}
+ :builds   {:main     {:target     :browser
+                       :output-dir "resources/public/js/main"
+                       :asset-path "/js/main"
+                       :dev        {:compiler-options {:external-config {:guardrails {:emit-spec? true :throw? false}}}}
+                       :release    {:compiler-options {:source-map true}}
+                       :modules    {:main {:init-fn holyjak.fulcro-exercises/init}}
+                       :devtools   {:preloads   [shadow.remote.runtime.cljs.browser ; Shadow Inspect tab support
+                                                 com.fulcrologic.fulcro.inspect.preload
+                                                 com.fulcrologic.fulcro.inspect.dom-picker-preload]
+                                    :after-load holyjak.fulcro-exercises.impl/refresh}}}}
