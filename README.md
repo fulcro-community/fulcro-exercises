@@ -27,6 +27,14 @@ Finally, open the `holyjak.fulcro-exercises` namespace and get coding, following
 
 **TIP**: Make sure that you select the correct _App_ at the bottom of Fulcro Inspect.
 
+## Troubleshooting and getting help during the exercises
+
+Use repeatedly `(hint <exercise number>)` (as long as there are any more hints for the exercise) to get useful tips when you get stuck.
+
+Leverage the [Fulcro Troubleshooting Decision Tree](https://blog.jakubholy.net/2020/troubleshooting-fulcro/) to help you troubleshoot your problems.
+
+Leverage Fulcro Inspect (especially the DB and perhaps Element tabs), check the Chrome JS Console for warnings and errors.
+
 ## License
 
 Copyleft © 2021 Jakub Holý

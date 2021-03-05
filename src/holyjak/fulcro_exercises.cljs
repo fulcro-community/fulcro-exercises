@@ -1,21 +1,14 @@
 (ns holyjak.fulcro-exercises
-  "This is a series of exercises to help you learn Fulcro, via the REPL.
-
-  Prerequisities:
-  - running Shadow-cljs via `clojure -M:serve`
-  - opened the webpage in Chrome, with Fulcro Inspect installed and open
-  - connected to its cljs REPL
+  "This is a series of exercises to help you learn Fulcro, via the REPL. See the README.md!
 
   How to use:
-  - Load this file into the cljs REPL
+  - Load this file into the cljs REPL (using the commands provided by your editor)
   - Inside an exercise comment, 'send the current top-level form to the REPL' (Cmd-Shift-P in Cursive on Mac)
     This will evaluate the code and render the UI in the browser
   - Read the instructions in the comments, make your changes, re-evaluate the exercise
   - Call `(hint <exercises number>)` to get help. Repeated calls may provide more help.
-
-  How does it work?
-  - `exercise` is actually just `(comment (do ...))`
-  _ `render!` just renders the UI directly on the app div in the HTML"
+  - See 'Troubleshooting and getting help during the exercises' in the README
+  "
   (:require
     [holyjak.fulcro-exercises.impl :refer [hint render!]]
     [com.fulcrologic.fulcro.application :as app]
@@ -32,6 +25,11 @@
 
     ;; Send this whole `do` to the REPL. Do you see the UI change in the browser?
     (render! Root0)
+
+    (comment ; try running the hint fn 3 times!
+      (hint 0)
+      (hint 0)
+      (hint 0))
 
     nil))
 
@@ -90,15 +88,15 @@
     (comment
       (hint 1))
 
-    ;; Bonus tasks:
+    ;; More tasks!
     ;; 3. Fix the React warning 'Each child in a list should have a unique "key" prop.'
-    ;; 4. Make sure the data is normalized in the DB: What do you need to change? What will the DB look like?
+    ;; 4. Make sure the data is normalized in the DB by adding idents. What will the DB look like?
     ;;
     ;; 5. Now, even if your idents are correct, the data still does not
-    ;;    seem to be normalized as you would expect. Why? What did we forget? Is
-    ;;    something wrong with our queries?! (Hint: yes, it is)
+    ;;    seem to be normalized as you would expect. Why? What did we forget?
+    ;;    Is something wrong with our queries?! (Hint: yes, it is)
     ;;    Fix it and try again!
-    ;;   Tip: Run `(swap! (::app/state-atom app) dissoc :teams)` to clear the DB.
+    ;;    Tip: Run `(swap! (::app/state-atom app) dissoc :teams)` to clear the DB.
 
     ;; 6. Rewrite the code to use merge/merge-component! instead.
     ;;    What is the correct target component? How to make sure the data looks

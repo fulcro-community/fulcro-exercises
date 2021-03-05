@@ -44,11 +44,12 @@
                 "app")))
 
 (comment
-  (hint 1)
+  (hint 4)
   (comp/component-name (app/root-class @current-app)),)
 
 (def hints
-  {0 ["No hints for the self-test exercise, sorry!"]
+  {0 ["Awesome, I see you got the hang of it!"
+      "No more hints here, sorry!"]
    1 ["You want to use the query of the root component, Root1"
       "Use `comp/get-query` to get it!"
       "1.4 Normalization: Add idents to all components (but the root)"
