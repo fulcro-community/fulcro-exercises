@@ -9,7 +9,7 @@ A follow-up to the [Minimalist Fulcro Tutorial](https://fulcro-community.github.
 
 ## Status
 
-Work in progress, though already useful. Provide feedback to `@holyjak` in the [`#fulcro` channel of the Clojurians Slack](https://app.slack.com/client/T03RZGPFR/C68M60S4F) or in [Zulip](https://clojurians.zulipchat.com/).
+Work in progress, though already useful. Provide feedback to `@holyjak` in the [`#fulcro` channel of the Clojurians Slack](https://app.slack.com/client/T03RZGPFR/C68M60S4F) or in [Zulip](https://clojurians.zulipchat.com/) or by [starting a discussion](https://github.com/fulcro-community/fulcro-exercises/discussions) here at GitHub.
 
 ## Usage
 
