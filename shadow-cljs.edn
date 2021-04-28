@@ -1,7 +1,8 @@
 {:deps     {:aliases [:dev]}
- :nrepl    {:port 9000}
- :jvm-opts ["-Xmx2G"]
+ :http     {:port 9631} ; shadow control server
+ :nrepl    {:port 9001}
  :dev-http {8000 "resources/public"}
+ :jvm-opts ["-Xmx2G"]
  :builds   {:main     {:target     :browser
                        :output-dir "resources/public/js/main"
                        :asset-path "/js/main"

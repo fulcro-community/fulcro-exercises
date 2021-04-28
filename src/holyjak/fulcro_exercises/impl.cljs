@@ -9,33 +9,50 @@
 
 (defn hint [exercise-nr]
   {:pre [(int? exercise-nr)
-         (not (neg? exercise-nr))
-         (< exercise-nr (count hints))]}
+         (not (neg? exercise-nr))]}
   (let [exercise-hints   (get hints exercise-nr)
         shown-previously (get @hints-shown exercise-nr 0)
         next?            (< shown-previously (count exercise-hints))
         more?            (not= (inc shown-previously) (count exercise-hints))
         printit!         #(println (str/join "\n\n" %))]
-    (if next?
+    (cond
+      (nil? exercise-hints) "Sorry, no hints available for this exercise"
+
+      next?
       (do (swap! hints-shown update exercise-nr (fnil inc 0))
-          (cond-> (subvec exercise-hints 0 (inc shown-previously))
+          (cond-> (subvec exercise-hints shown-previously (inc shown-previously))
                   more? (conj "Repeat for more...")
                   true printit!))
+
+      :else
       (printit! exercise-hints))))
 
 (defonce current-app (atom nil))
+
+(defn show-client-db
+  "Print the current content of Fulcro's Client DB, if any."
+  []
+  (some-> @current-app
+          ::app/state-atom
+          deref
+          cljs.pprint/pprint))
+
+(defn init-and-render!
+  "Like [[render!]] but also sets the Fulcro app's initial client DB."
+  [RootComponent initial-db]
+  (println "Rendering" RootComponent "...")
+  (let [current-root? (= (some-> @current-app app/root-class .-name)
+                         (.-name RootComponent))
+        app           (if current-root? @current-app (app/fulcro-app {:initial-db initial-db}))]
+    (reset! current-app app)
+    (app/mount! app RootComponent "app" {:initialize-state? (some? initial-db)})
+    app))
 
 (defn render!
   "Renders the given root component.
   Returns the (new) fulcro app."
   [RootComponent]
-  (println "Rendering" RootComponent "...")
-  (let [current-root? (= (some-> @current-app app/root-class .-name)
-                         (.-name RootComponent))
-        app           (if current-root? @current-app (app/fulcro-app))]
-    (reset! current-app app)
-    (app/mount! app RootComponent "app")
-    app))
+  (init-and-render! RootComponent nil))
 
 (defn refresh []
   (when-let [app @current-app]
@@ -50,10 +67,17 @@
 (def hints
   {0 ["Awesome, I see you got the hang of it!"
       "No more hints here, sorry!"]
-   1 ["You want to use the query of the root component, Root1"
-      "Use `comp/get-query` to get it!"
-      "1.4 Normalization: Add idents to all components (but the root)"
-      "1.4b Normalization: Use :team/id, :player/id, :address/city as the idents (same as `(fn [] [:team/id (:team/id <props>)])` ...). But also remember to add the IDs to the queries!"
-      "1.5 Normalization fix: remember to use comp/get-query in your queries!"
-      "1.6 merge-component!: We cannot use Root1 because it has no ident and thus we cannot merge the whole tree. But we can merge `(:teams data-tree)` using the correct component and we can re-establish the link from `:teams` be leveraging the merge-component! argument `:append [:teams]`"]})
+   2 ["Create defsc ValuePropositionPoint, remember to use comp/factory. You do not need any query, just use the props the parent passes in."
+      "2.b Look at the options that comp/factory takes. Remember you can use :proposition/label as a function."]
+   3 ["Remember to make a join with comp/get-query to include the child's (i.e. ValuePropositionPoint's) query in Root"]
+   4 ["Simply pass in to `merge!` the same data-tree that we passed as initial-db to `init-and-render!` in the previous exercise."
+      "`merge!` also needs a query; and since we are passing all the app data, it should be the root query"]
+   5 ["5.1a You want to use the query of the root component, Root5"
+      "5.1b Use `comp/get-query` to get it!"
+      "5.2a Normalization: Add idents to all components (but the root). Use the https://book.fulcrologic.com/#_keyword_idents form."
+      "5.2b Normalization: Use :team/id, :player/id, :address/city as the idents (same as `(fn [] [:team/id (:team/id <props>)])` ...). But also remember to add the IDs to the queries!"
+      "5.3 Normalization fix: remember to use comp/get-query in your queries!"
+      "5.4a merge-component!: We cannot use Root5 because it has no ident and thus we cannot merge the whole tree. But we can merge a team's data using the correct component."
+      "5.4b Inserting the team's data is not enough - we also need to re-establish the 'edge' between it and `:teams`. Look at the client DB and see it is missing! Look at what options merge-component! takes to support this."
+      "5.4c Add the arguments `:append [:teams]`"]})
 
