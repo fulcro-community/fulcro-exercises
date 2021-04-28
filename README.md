@@ -13,7 +13,9 @@ Work in progress, though already useful. Provide feedback to `@holyjak` in the [
 
 ## Usage
 
-Clone this repo, enter the directory.
+Clone this repo, enter the directory. Then install prerequisites:
+
+    npm install
 
 Compile the ClojureScript code and start a server for the UI:
 
