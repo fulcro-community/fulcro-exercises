@@ -25,17 +25,22 @@
 
 (defonce current-app (atom nil))
 
+(defn init-and-render!
+  "Like [[render!]] but also sets the Fulcro app's initial client DB."
+  [RootComponent initial-db]
+  (println "Rendering" RootComponent "...")
+  (let [current-root? (= (some-> @current-app app/root-class .-name)
+                         (.-name RootComponent))
+        app           (if current-root? @current-app (app/fulcro-app {:initial-db initial-db}))]
+    (reset! current-app app)
+    (app/mount! app RootComponent "app" {:initialize-state? (some? initial-db)})
+    app))
+
 (defn render!
   "Renders the given root component.
   Returns the (new) fulcro app."
   [RootComponent]
-  (println "Rendering" RootComponent "...")
-  (let [current-root? (= (some-> @current-app app/root-class .-name)
-                         (.-name RootComponent))
-        app           (if current-root? @current-app (app/fulcro-app))]
-    (reset! current-app app)
-    (app/mount! app RootComponent "app")
-    app))
+  (init-and-render! RootComponent nil))
 
 (defn refresh []
   (when-let [app @current-app]
@@ -50,7 +55,9 @@
 (def hints
   {0 ["Awesome, I see you got the hang of it!"
       "No more hints here, sorry!"]
-   1 ["You want to use the query of the root component, Root1"
+   2 ["Create defsc ValuePropositionPoint, remember to use comp/factory. You do not need any query, just use the props the parent passes in."
+      "2.b Look at the options that comp/factory takes. Remember you can use :proposition/label as a function."]
+   5 ["You want to use the query of the root component, Root1"
       "Use `comp/get-query` to get it!"
       "1.4 Normalization: Add idents to all components (but the root)"
       "1.4b Normalization: Use :team/id, :player/id, :address/city as the idents (same as `(fn [] [:team/id (:team/id <props>)])` ...). But also remember to add the IDs to the queries!"
