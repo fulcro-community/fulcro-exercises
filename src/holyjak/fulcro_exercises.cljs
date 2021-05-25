@@ -13,8 +13,9 @@
   (:require
     [holyjak.fulcro-exercises.impl :refer [hint init-and-render! render! show-client-db]]
     [com.fulcrologic.fulcro.application :as app]
-    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
-    [com.fulcrologic.fulcro.dom :as dom :refer [div h1 h2 h3 li ol p]]
+    [com.fulcrologic.fulcro.components :as comp :refer [defsc transact!]]
+    [com.fulcrologic.fulcro.mutations :refer [defmutation]]
+    [com.fulcrologic.fulcro.dom :as dom :refer [button div form h1 h2 h3 input label li ol p]]
     [com.fulcrologic.fulcro.algorithms.merge :as merge]))
 
 (defn init [])
@@ -96,7 +97,7 @@
     ;;      Also try to use the provided `(show-client-db)` function for that.
     ,))
 
-(do;comment ; 4 "Insert data into the client DB with merge/merge!"
+(comment ; 4 "Insert data into the client DB with merge/merge!"
   (do
     ;; Again we build on the previous solution but instead of inserting the data
     ;; at app initialization, we will revert to ordinary `render!` and insert them
@@ -191,8 +192,89 @@
     ; (hint 5)
     ,))
 
+(comment ; 6 Client-side mutations
+  (do
+    ;; Enable the user to select individual elements or all at once
+    ;; and delete these from the Client DB. (No remote in this exercises.)
+    ;;
+    ;; Your task is thus to implement the mutations `set-players-checked` and `delete-selected`,
+    ;; and trigger them in the :onClick handlers below instead of the current `println`.
+    ;; Keep to the suggested inputs of those mutations, to make comparison easier.
+    ;;
+    ;; => You will practice defining mutations and operating on the client DB data.
+    ;;
+    ;; (Note: We could have structured the mutations in a simpler way. But this one
+    ;; provides you a sufficient challenge.)
+    ;;
+    ;; Tips:
+    ;; - It is often useful to put most mutation logic into a pure helper fn state-map -> state-map
+    ;;   (often with the same name but ending with *)
+    ;; - Get the current state-map via `@(::app/state-atom app6)` to play with your code in the REPL
+    ;; - Use Fulcro Dev Tools to look at the database and Transactions
+    ;; - Check `(hint 6)` is you need help
+
+    (defn make-player->team
+      "A helper function to create a 'lookup' so that we can easily find a player's team.
+      You might - or not :-) - find it useful in your mutations.
+
+      Take a seq of teams and look into their `:team/players` to construct the map
+      `player-id` -> `team-id`, useful to look up a player's team."
+      ;; To try it out:
+      ;; `(->> @(::app/state-atom app6) :team/id vals make-player->team)`
+      [teams]
+      (into {}
+            (for [{team-id :team/id
+                   players :team/players} teams
+                  [_ player-id]           players]
+              [player-id team-id])))
+
+    (defsc Player [this {:keys [player/id player/name ui/checked?]}]
+      {:query [:player/id :player/name :ui/checked?]
+       :ident :player/id}
+      (li
+        (input {:type    "checkbox"
+                :checked (boolean checked?)
+                :onClick #(println "TODO: trigger the mutation `(set-players-checked {:players [id] :value (not checked?)})`")})
+        name))
+
+    (def ui-player (comp/factory Player {:keyfn :player/id}))
+
+    (defsc Team [this {:team/keys [name players] checked? :ui/checked?}]
+      {:query [:team/id :team/name :ui/checked? {:team/players (comp/get-query Player)}]
+       :ident :team/id}
+      (let [all-checked? (and (seq players) (->> players (map :ui/checked?) (every? boolean)))]
+        (div (h2 "Team " name ":")
+             (label (input {:type    "checkbox"
+                            :checked all-checked?
+                            :onClick #(println "TODO: trigger the mutation `(set-players-checked {:players (map :player/id players) :value   (not all-checked?)})`")})
+                    "Select all")
+             (ol (map ui-player players)))))
+
+    (def ui-team (comp/factory Team {:keyfn :team/id}))
+
+    (defsc Root6 [this {teams :teams}]
+      {:query [{:teams (comp/get-query Team)}]}
+      (form
+        (h1 "Teams")
+        (button {:type "button"
+                 :onClick #(println "TODO: trigger the mutation `(delete-selected nil)`")}  ; TODO implement
+                "Delete selected")
+        (map ui-team teams)))
+
+    (def app6 (render! Root6))
+
+    (run!
+      #(merge/merge-component! app6 Team % :append [:teams])
+      [#:team{:name "Explorers" :id :explorers
+              :players [#:player{:id 1 :name "Jo"}
+                        #:player{:id 2 :name "Ola"}
+                        #:player{:id 3 :name "Anne"}]}
+       #:team{:name "Bikers" :id :bikers
+              :players [#:player{:id 4 :name "Cyclotron"}]}])
+
+    ,))
+
 ;; TODO Additional exercises:
-;; - mutation
 ;; - example of ui-only data
 ;; - load! + targeting + ? df/marker
 ;; - anything else from the Minim. Fulcro Tutorial should be added?

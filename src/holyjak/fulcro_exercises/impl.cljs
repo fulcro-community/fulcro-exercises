@@ -79,5 +79,7 @@
       "5.3 Normalization fix: remember to use comp/get-query in your queries!"
       "5.4a merge-component!: We cannot use Root5 because it has no ident and thus we cannot merge the whole tree. But we can merge a team's data using the correct component."
       "5.4b Inserting the team's data is not enough - we also need to re-establish the 'edge' between it and `:teams`. Look at the client DB and see it is missing! Look at what options merge-component! takes to support this."
-      "5.4c Add the arguments `:append [:teams]`"]})
+      "5.4c Add the arguments `:append [:teams]`"]
+   6 ["You only need the `(action [{:keys [state]}] ...`) part of the mutation (where `state` is an atom containing the state-map a.k.a. client DB)"
+      "Remember that you must not only remove the player her/himself but also any reference to her/him from a team's players list. `merge/remove-ident*` will help with that."]})
 
