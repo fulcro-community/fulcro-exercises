@@ -4,6 +4,7 @@
     [holyjak.fulcro-exercises.impl :refer [hint init-and-render! render! show-client-db]]
     [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro.algorithms.data-targeting :as targeting]
+    [com.fulcrologic.fulcro.algorithms.normalized-state :as norm]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp :refer [defsc transact!]]
     [com.fulcrologic.fulcro.data-fetch :as df]
@@ -209,7 +210,7 @@
       "Take a seq of teams and look into their `:team/players` to construct the map
       `player-id` -> `team-id`, useful to look up a player's team."
       ;; To try it out:
-      ;; `(->> @(::app/state-atom app6) :team/id vals make-player->team)`
+      ;; `(->> (app/current-state app6) :team/id vals make-player->team)`
       [teams]
       (into {}
             (for [{team-id :team/id
@@ -217,11 +218,12 @@
                   [_ player-id]           players]
               [player-id team-id])))
 
-    (defn delete-player [state-map [player-id team-id]]
-      (-> state-map
-          (update :player/id dissoc player-id)
-          (merge/remove-ident* [:player/id player-id]
-                               [:team/id team-id :team/players])))
+    ;; OPTION B: DIY deletion:
+    ;(defn delete-player [state-map [player-id team-id]]
+    ;  (-> state-map
+    ;      (update :player/id dissoc player-id)
+    ;      (merge/remove-ident* [:player/id player-id]
+    ;                           [:team/id team-id :team/players])))
 
     (defn delete-selected* [{player-map :player/id :as state-map}]
       (let [player->team  (make-player->team (-> state-map :team/id vals))
@@ -231,10 +233,16 @@
                                (filter :ui/checked?)
                                (map :player/id))
             player-teams (map player->team selected-player-ids)]
+        ;; OPTION B: DIY deletion:
+        #_(reduce
+            delete-player
+            state-map
+            (map vector selected-player-ids player-teams))
+        ;; OPTION A: using built-in helpers
         (reduce
-          delete-player
+          norm/remove-entity
           state-map
-          (map vector selected-player-ids player-teams))))
+          (map #(vector :player/id %) selected-player-ids))))
 
     (defmutation delete-selected [_]
       (action [{:keys [state]}]
@@ -254,7 +262,7 @@
     (defsc Team [this {:team/keys [name players] checked? :ui/checked?}]
            {:query [:team/id :team/name :ui/checked? {:team/players (comp/get-query Player)}]
             :ident :team/id}
-           (let [all-checked? (and (seq players) (->> players (map :ui/checked?) (every? boolean)))]
+           (let [all-checked? (and (seq players) (every? :ui/checked? players))]
              (div (h2 "Team " name ":")
                   (label (input {:type    "checkbox"
                                  :checked all-checked?
@@ -319,9 +327,10 @@
         (let [loading? false] ; scaffolding for TASK 5
           (cond
             loading? (p "Loading...")
+            ;; ...
             :else
-            [(h1 "Teams")
-             (map ui-team teams)]))))
+            (comp/fragment (h1 "Teams")
+                           (map ui-team teams))))))
 
     ;; --- "Backend" resolvers to feed data to load! ---
     (defresolver my-very-awesome-teams [_ _] ; a global resolver
@@ -402,9 +411,10 @@
         (let [loading? false] ; scaffolding for TASK 5
           (cond
             loading? (p "Loading...")
+            ;; ...
             :else
-            [(h1 "Teams")
-             (map ui-team teams)]))))
+            (comp/fragment (h1 "Teams")
+                           (map ui-team teams))))))
 
     ,))
 
@@ -422,7 +432,8 @@
         (let [marker (get props [df/marker-table :teams])]
           (cond
             (df/loading? marker) (p "Loading...")
+            ;; ...
             :else
-            [(h1 "Teams")
-             (map ui-team teams)]))))
+            (comp/fragment (h1 "Teams")
+                           (map ui-team teams))))))
     ,))
