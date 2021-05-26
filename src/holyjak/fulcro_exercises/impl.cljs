@@ -1,5 +1,6 @@
 (ns holyjak.fulcro-exercises.impl
   (:require
+    [holyjak.fulcro-exercises.mock-server :refer [mock-remote]]
     [clojure.string :as str]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp :refer [defsc]]))
@@ -39,20 +40,36 @@
 
 (defn init-and-render!
   "Like [[render!]] but also sets the Fulcro app's initial client DB."
-  [RootComponent initial-db]
-  (println "Rendering" RootComponent "...")
-  (let [current-root? (= (some-> @current-app app/root-class .-name)
-                         (.-name RootComponent))
-        app           (if current-root? @current-app (app/fulcro-app {:initial-db initial-db}))]
-    (reset! current-app app)
-    (app/mount! app RootComponent "app" {:initialize-state? (some? initial-db)})
-    app))
+  ([RootComponent initial-db] (init-and-render! RootComponent initial-db nil))
+  ([RootComponent initial-db opts]
+
+   (let [current-root? (= (some-> @current-app app/root-class .-name)
+                          (.-name RootComponent))
+         remotes       (some-> (:resolvers opts) seq mock-remote)
+         app           (if current-root? @current-app (app/fulcro-app
+                                                        {:initial-db initial-db
+                                                         :remotes    remotes}))]
+
+     (when remotes
+       (println "LOG: Configured the remote" (-> remotes keys first) "for the Fulcro App"))
+     (reset! current-app app)
+     (println "LOG: Rendering" RootComponent "...")
+     (app/mount! app RootComponent "app" {:initialize-state? (some? initial-db)})
+     app)))
 
 (defn render!
-  "Renders the given root component.
-  Returns the (new) fulcro app."
-  [RootComponent]
-  (init-and-render! RootComponent nil))
+  "Renders the given root component, also creating a new Fulcro app for it.
+
+  Args:
+  - `RootComponent` - the class of the component to render
+  - `opts` - options, including:
+    - `:resolvers` - a sequence of Pathom resolvers; if provided, a Pathom 'backend'
+       (though running in the browser) with these resolvers will be set up
+
+  Return the new Fulcro app."
+  ([RootComponent] (render! RootComponent nil))
+  ([RootComponent opts]
+   (init-and-render! RootComponent nil opts)))
 
 (defn refresh []
   (when-let [app @current-app]
@@ -81,5 +98,10 @@
       "5.4b Inserting the team's data is not enough - we also need to re-establish the 'edge' between it and `:teams`. Look at the client DB and see it is missing! Look at what options merge-component! takes to support this."
       "5.4c Add the arguments `:append [:teams]`"]
    6 ["You only need the `(action [{:keys [state]}] ...`) part of the mutation (where `state` is an atom containing the state-map a.k.a. client DB)"
-      "Remember that you must not only remove the player her/himself but also any reference to her/him from a team's players list. `merge/remove-ident*` will help with that."]})
+      "Remember that you must not only remove the player her/himself but also any reference to her/him from a team's players list. `merge/remove-ident*` will help with that."]
+   7 ["7.1a The `server-property` passed to load should be a property a global resolver returns. In this case `:teams`."
+      "7.1b The component class passed to load! holds the query defining what to fetch for each element. Since we are getting a list of teams, the component should be `Team`"
+      "7.2 load! does internally transact a mutation and can be called as-is, directly from the :onClick. Use the component's `this` instead of `app7` there."
+      "7.3 After you factor out a resolver, remember to add it to the `:resolvers` list, as Pathom needs to be informed of it."
+      "7.4 Use the `:target` option of load! with `(targeting/replace-at ..)`."]})
 

@@ -2,12 +2,14 @@
   "Solutions to the exercises - read it when you are desperate!"
   (:require
     [holyjak.fulcro-exercises.impl :refer [hint init-and-render! render! show-client-db]]
+    [com.fulcrologic.fulcro.algorithms.merge :as merge]
+    [com.fulcrologic.fulcro.algorithms.data-targeting :as targeting]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp :refer [defsc transact!]]
+    [com.fulcrologic.fulcro.data-fetch :as df]
     [com.fulcrologic.fulcro.mutations :refer [defmutation]]
     [com.fulcrologic.fulcro.dom :as dom :refer [button div form h1 h2 h3 input label li ol p]]
-    [com.fulcrologic.fulcro.algorithms.merge :as merge]))
-
+    [com.wsscode.pathom.connect :as pc :refer [defresolver]]))
 
 (comment ; 1 "Hard-coded DOM"
   (do
@@ -282,4 +284,145 @@
        #:team{:name "Bikers" :id :bikers
               :players [#:player{:id 4 :name "Cyclotron"}]}])
 
+    ,))
+
+(comment ; 7 load!-ing data from a remote
+  (do
+    ;; VARIANT 7.1 and 7.2
+
+    ;; --- "Frontend" UI ---
+    (defsc Address [_ {city :address/city}]
+      {:query [:address/city]
+       :ident :address/city}
+      (p "City: " city))
+
+    (defsc Player [_ {:player/keys [name address]}]
+      {:query [:player/id :player/name {:player/address (comp/get-query Address)}]
+       :ident :player/id}
+      (li "Player: " name " lives at: " ((comp/factory Address) address)))
+
+    (def ui-player (comp/factory Player {:keyfn :player/id}))
+
+    (defsc Team [_ {:team/keys [name players]}]
+      {:query [:team/id :team/name {:team/players (comp/get-query Player)}]
+       :ident :team/id}
+      (div (h2 "Team " name ":")
+           (ol (map ui-player players))))
+
+    (def ui-team (comp/factory Team {:keyfn :team/id}))
+
+    (defsc Root7 [this {teams :teams}]
+      {:query [{:teams (comp/get-query Team)}]}
+      (div
+        (button {:type "button" ; VARIANT 7.2; comment out for 7.1
+                 :onClick #(df/load! this :teams Team)} "Load data")
+        (let [loading? false] ; scaffolding for TASK 5
+          (cond
+            loading? (p "Loading...")
+            :else
+            [(h1 "Teams")
+             (map ui-team teams)]))))
+
+    ;; --- "Backend" resolvers to feed data to load! ---
+    (defresolver my-very-awesome-teams [_ _] ; a global resolver
+                 {::pc/input  #{}
+                  ::pc/output [{:teams [:team/id :team/name
+                                        {:team/players [:player/id :player/name :player/address]}]}]}
+                 {:teams [#:team{:name "Hikers" :id :hikers
+                                 :players [#:player{:id 1 :name "Luna" :address {:address/id 1}}
+                                           #:player{:id 2 :name "Sol" :address {:address/id 2}}]}]})
+
+    (defresolver address [_ {id :address/id}] ; an ident resolver
+                 {::pc/input #{:address/id}
+                  ::pc/output [:address/id :address/city]}
+                 (case id
+                   1 #:address{:id 1 :city "Oslo"}
+                   2 #:address{:id 2 :city "Trondheim"}))
+
+    ;; Render the app, with a backend using these resolvers
+    (def app7 (render! Root7 {:resolvers [address my-very-awesome-teams]}))
+
+    (df/load! app7 :teams Team) ; VARIANT 7.1; comment out for 7.2
+
+    ;; TODO: TASK 3 - split ident resolvers for a team and a player out of my-very-awesome-teams, as we did for address;
+    ;;       Then play with them using Fulcro Inspect's EQL tab - fetch a particular person with just the name; ask for
+    ;;       a property that does not exist (and check both the EQL tab and the Inspect's Network tab)
+
+    ,))
+
+(comment ; VARIANT 7.3 - separate resolvers
+  (do
+
+    ;; BEWARE: Only the resolvers and render presented here, the UI is the same as above.
+    ;; <THE SAME FRONTEND CODE AS IN 7.1 + 7.2 HERE...>
+
+    ;; --- "Backend" resolvers to feed data to load! ---
+    (defresolver my-very-awesome-teams [_ _] ; a global resolver
+      {::pc/input  #{}
+       ::pc/output [{:teams [:team/id :team/name :team/players]}]}
+      {:teams [#:team{:name "Hikers" :id :hikers
+                      :players [#:player{:id 1}
+                                #:player{:id 2}]}]})
+
+    (defresolver team [_ {id :team/id}] ; an ident resolver
+      {::pc/input #{:team/id}
+       ::pc/output [:team/id :team/name :team/players]}
+      (case id
+        :hikers #:team{:id :hikers :name "Hikers"
+                       :players [#:player{:id 1} #:player{:id 2}]}))
+
+    (defresolver player [_ {id :player/id}] ; an ident resolver
+      {::pc/input #{:player/id}
+       ::pc/output [:player/id :player/name :player/address]}
+      (case id
+        1 #:player{:id 1 :name "Luna" :address {:address/id 1}}
+        2 #:player{:id 2 :name "Sol" :address  {:address/id 2}}))
+
+    (defresolver address [_ {id :address/id}] ; an ident resolver
+      {::pc/input #{:address/id}
+       ::pc/output [:address/id :address/city]}
+      (case id
+        1 #:address{:id 1 :city "Oslo"}
+        2 #:address{:id 2 :city "Trondheim"}))
+
+    ;; Render the app, with a backend using these resolvers
+    (def app7 (render! Root7 {:resolvers [address my-very-awesome-teams player team]}))
+
+    ,))
+
+(comment ; VARIANT 7.4 - targeting
+  (do
+    ;; BEWARE: Only the changed parts presented here, the rest is the same as above.
+    ;; <THE SAME CODE AS ABOVE EXCLUDING Root7 HERE...>
+    (defsc Root7 [this {teams :all-teams}]
+      {:query [{:all-teams (comp/get-query Team)}]}
+      (div
+        (button {:type "button"
+                 :onClick #(df/load! this :teams Team {:target (targeting/replace-at [:all-teams])})} "Load data")
+        (let [loading? false] ; scaffolding for TASK 5
+          (cond
+            loading? (p "Loading...")
+            :else
+            [(h1 "Teams")
+             (map ui-team teams)]))))
+
+    ,))
+
+(comment ; VARIANT 7.5 - load marker
+  (do
+    ;; BEWARE: Only the changed parts presented here, the rest is the same as above.
+    ;; <THE SAME CODE AS ABOVE EXCLUDING Root7 HERE...>
+    (defsc Root7 [this {teams :all-teams :as props}]
+      {:query [{:all-teams (comp/get-query Team)} [df/marker-table :teams]]}
+      (div
+        (button {:type "button"
+                 :onClick #(df/load! this :teams Team {:target (targeting/replace-at [:all-teams])
+                                                       :marker :teams})}
+                "Load data")
+        (let [marker (get props [df/marker-table :teams])]
+          (cond
+            (df/loading? marker) (p "Loading...")
+            :else
+            [(h1 "Teams")
+             (map ui-team teams)]))))
     ,))

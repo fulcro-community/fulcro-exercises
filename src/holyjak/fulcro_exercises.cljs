@@ -12,11 +12,14 @@
   "
   (:require
     [holyjak.fulcro-exercises.impl :refer [hint init-and-render! render! show-client-db]]
+    [com.fulcrologic.fulcro.algorithms.merge :as merge]
+    [com.fulcrologic.fulcro.algorithms.data-targeting :as targeting]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp :refer [defsc transact!]]
+    [com.fulcrologic.fulcro.data-fetch :as df]
     [com.fulcrologic.fulcro.mutations :refer [defmutation]]
     [com.fulcrologic.fulcro.dom :as dom :refer [button div form h1 h2 h3 input label li ol p]]
-    [com.fulcrologic.fulcro.algorithms.merge :as merge]))
+    [com.wsscode.pathom.connect :as pc :refer [defresolver]]))
 
 (defn init [])
 
@@ -274,9 +277,90 @@
 
     ,))
 
+(comment ; 7 load!-ing data from a remote
+  (do
+    ;; Learn how to load! data and practice using Fulcro Inspect
+    ;; This is similar to #5 but with merge-component! replaced with load!
+    ;; We now run a mock, in-browser server (with a real Pathom).
+    ;; Read on to find the task your should do.
+
+    ;; --- "Frontend" UI ---
+    (defsc Address [_ {city :address/city}]
+      {:query [:address/city]
+       :ident :address/city}
+      (p "City: " city))
+
+    (defsc Player [_ {:player/keys [name address]}]
+      {:query [:player/id :player/name {:player/address (comp/get-query Address)}]
+       :ident :player/id}
+      (li "Player: " name " lives at: " ((comp/factory Address) address)))
+
+    (def ui-player (comp/factory Player {:keyfn :player/id}))
+
+    (defsc Team [_ {:team/keys [name players]}]
+      {:query [:team/id :team/name {:team/players (comp/get-query Player)}]
+       :ident :team/id}
+      (div (h2 "Team " name ":")
+           (ol (map ui-player players))))
+
+    (def ui-team (comp/factory Team {:keyfn :team/id}))
+
+    (defsc Root7 [this {teams :teams :as props}]
+      {:query [{:teams (comp/get-query Team)}]}
+      (div
+        ;; TASK 2 (see below) - un-comment and complete this code:
+        ;(button {:type "button"
+        ;         :onClick #(println "df/load! the data from here")} "Load data")
+        (let [loading? false] ; scaffolding for TASK 5
+          (cond
+            loading? (p "Loading...")
+            :else
+            [(h1 "Teams")
+             (map ui-team teams)]))))
+
+    ;; --- "Backend" resolvers to feed data to load! ---
+    (defresolver my-very-awesome-teams [_ _] ; a global resolver
+      {::pc/input  #{}
+       ::pc/output [{:teams [:team/id :team/name
+                             {:team/players [:player/id :player/name :player/address]}]}]}
+      {:teams [#:team{:name "Hikers" :id :hikers
+                      :players [#:player{:id 1 :name "Luna" :address {:address/id 1}}
+                                #:player{:id 2 :name "Sol" :address {:address/id 2}}]}]})
+
+    (defresolver address [_ {id :address/id}] ; an ident resolver
+      {::pc/input #{:address/id}
+       ::pc/output [:address/id :address/city]}
+      (case id
+        1 #:address{:id 1 :city "Oslo"}
+        2 #:address{:id 2 :city "Trondheim"}))
+
+    ;; Render the app, with a backend using these resolvers
+    (def app7 (render! Root7 {:resolvers [address my-very-awesome-teams]}))
+
+    ;; TODO: TASK 1 - use `df/load!` to load data from the my-very-awesome-teams
+    (println "TODO: df/load! should be invoked here...")
+    ;; (Remember `(hint 7)` when in need.)
+    ;; Now check Fulcro Inspect - the Transactions and Network tabs and explore the load there.
+    ;; From Inspect's Network use the [Send to query] button to show it in the EQL tab, run it
+    ;; from there. Modify, run again.
+    ;; - EQL tab - do [(Re)load Pathom Index] to get auto-completion for the queries and try to type some
+    ;; - Index Explorer tab - do [Load index], explore the index (you might need to scroll up on the right side to see the selected thing)
+
+    ;; TODO: TASK 2 - replace loading data during initialization (above) with loading them on-demand, on the button click
+
+    ;; TODO: TASK 3 - split ident resolvers for a team and a player out of `my-very-awesome-teams`, as we did for address;
+    ;;       Then play with them using Fulcro Inspect's EQL tab - fetch a particular person with just the name; ask for
+    ;;       a property that does not exist (and check both the EQL tab and the Inspect's Network tab) - what does it look like?
+
+    ;; TODO: TASK 4 - use targeting to fix a mismatch between a resolver and the UI: in `Root7`, rename `:teams` to `:all-teams`; how
+    ;;       do you need to change the load! for this to work as before?
+    ;;       Check in the Client DB that the changed data look as expected.
+
+    ;; TODO: TASK 5 - Use Fulcro load markers to display "Loading..." instead of the content while loading the data (see Root7)
+
+    ,))
+
 ;; TODO Additional exercises:
-;; - example of ui-only data
-;; - load! + targeting + ? df/marker
 ;; - anything else from the Minim. Fulcro Tutorial should be added?
 ;;   - Initial state propagation?
 ;;   - Computed props for a callback or parent-visible prop
