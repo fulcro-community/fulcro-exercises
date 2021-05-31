@@ -19,7 +19,9 @@ Clone this repo, enter the directory. Then install prerequisites:
 
 Compile the ClojureScript code and start a server for the UI:
 
-    clojure -M:serve
+    clojure -M:serve 
+    # or, if using Emacs or needing Cider for some other reason:
+    # clojure -M:cider:serve
 
 You can now see the application at http://localhost:8000. Open it in Chrome, where you have [installed Fulcro Inspect](https://book.fulcrologic.com/#_install_fulcro_inspect) and [enabled custom formatters](https://book.fulcrologic.com/#_configure_chrome_development_settings)!
 
