@@ -25,7 +25,7 @@ You can now see the application at http://localhost:8000. Open it in Chrome, whe
 
 Now (after having accessed the web page!) connect to the cljs REPL: first connect to the nREPL running at port 9001 then execute `(shadow/repl :main)` there. (If you get "_No available JS runtime._" then you likely forgot to load the page in a browser first.)
 
-Finally, open the `holyjak.fulcro-exercises` namespace and get coding, following the instructions provided there!
+Finally, open the `holyjak.fulcro-exercises` namespace and get coding, following the instructions provided there in the ns docstring!
 
 **TIP**: Make sure that you select the correct _App_ at the bottom of Fulcro Inspect, if there are multiple (or hard-reload the page to get rid of all the past ones).
 

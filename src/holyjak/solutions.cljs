@@ -1,5 +1,5 @@
-(ns holyjak.solutions-read-when-desperate
-  "Solutions to the exercises - read it when you are desperate!"
+(ns holyjak.solutions
+  "Solutions to the exercises - check them against your and peek at them if you get stuck."
   (:require
     [holyjak.fulcro-exercises.impl :refer [hint init-and-render! render! show-client-db]]
     [com.fulcrologic.fulcro.algorithms.merge :as merge]

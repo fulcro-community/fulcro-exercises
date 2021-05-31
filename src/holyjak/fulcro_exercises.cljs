@@ -3,11 +3,18 @@
 
   How to use:
   - Load this file into the cljs REPL (using the commands provided by your editor)
-  - Un-comment *temporarily* the exercise you are working on (by replacing `(comment ...`
-    with `(do ;comment ...`) Shadow-cljs will thus evaluate the code and it will render.
-    Tip: Hard-reload the page occasionally to get rid of residues of past exercises.
-  - Read the instructions in the comments, make your changes, re-evaluate the exercise
-  - Call `(hint <exercises number>)` to get help. Repeated calls may provide more help.
+  - For each exercise:
+    1. Un-comment *temporarily* the exercise you are working on (by replacing `(comment ...`
+      with `(do ;comment ...`) Shadow-cljs will thus evaluate the code and it will render.
+      Tip: Hard-reload the page occasionally to get rid of residues of past exercises.
+    2. Read the instructions in the comments, make your changes, wait for shadow to apply them
+    3. Regularly look at what your solution looks like in Fulcro Inspect (Client DB, ...) to
+       get familiar with this essential tool.
+    4. Call `(hint <exercises number>)` to get help. Repeated calls may provide more help.
+       Even if you want to do it without help, check out all the hints eventually. They may
+       contain useful insights.
+    5. When done, compare your solution with mine in the `holyjak.solutions` namespace.
+    6. Finally, comment-out the exercise again and go on to the next one.
   - See 'Troubleshooting and getting help during the exercises' in the README
   "
   (:require
@@ -23,6 +30,20 @@
     [com.wsscode.pathom.connect :as pc :refer [defresolver]]))
 
 (defn init [])
+
+;; ### TODO: Read the namespace docstring for instructions how to work with the exercises ###
+
+;; TASK 0.0: Comment this out by replacing `(do; comment` with `(comment` and go on to the next exercise.
+(do; comment
+  (do
+    (defsc Root00 [_ _]
+      (div
+        (h1 "Welcome to Fulcro exercises!")
+        (p "This is an example what an exercise looks like while you work on it.")
+        (p "Just comment this exercises out as describe in the code comment above and go on to the next.")))
+
+    (render! Root00)
+    ,))
 
 (comment ; 0 "Try it out!"
   (do
