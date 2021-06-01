@@ -134,6 +134,9 @@
     (config-and-render!
       Root3
       {:initial-db
+       ;; NOTE: Normally the initial-db we pass here should be already normalized but
+       ;; since we do not care about normalization and are happy with denormalized data
+       ;; in this exercise, it is OK to pass in the data tree as-is.
        {:page/heading "<3> Fulcro is:"
         :page/value-proposition-points
                       [{:proposition/label "Malleable"}
