@@ -37,6 +37,12 @@ Leverage the [Fulcro Troubleshooting Decision Tree](https://blog.jakubholy.net/2
 
 Leverage Fulcro Inspect (especially the DB and perhaps Element tabs), check the Chrome JS Console for warnings and errors.
 
+### Various problems and solutions
+
+#### Fulcro Inspect shows an empty client DB
+
+It might help to close it, reload the page, then open it again.
+
 ## License
 
 Copyleft © 2021 Jakub Holý

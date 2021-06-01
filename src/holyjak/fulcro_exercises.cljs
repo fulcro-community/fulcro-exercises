@@ -26,16 +26,17 @@
     [com.fulcrologic.fulcro.components :as comp :refer [defsc transact!]]
     [com.fulcrologic.fulcro.data-fetch :as df]
     [com.fulcrologic.fulcro.mutations :refer [defmutation]]
-    [com.fulcrologic.fulcro.dom :as dom :refer [button div form h1 h2 h3 input label li ol p]]
+    [com.fulcrologic.fulcro.dom :as dom :refer [button div form h1 h2 h3 input label li ol p ul]]
     [com.wsscode.pathom.connect :as pc :refer [defresolver]]))
 
 (defn init [])
 
 ;; ### TODO: Read the namespace docstring for instructions how to work with the exercises ###
 
-;; TASK 0.0: Comment this out by replacing `(do; comment` with `(comment` and go on to the next exercise.
 (do; comment
   (do
+    ;; TASK 0.0: Comment this out by replacing the `(do; comment` above with `(comment` and go on to the next exercise.
+    ;; LEARNING OBJECTIVES: Get familiar with switching from an exercise to another.
     (defsc Root00 [_ _]
       (div
         (h1 "Welcome to Fulcro exercises!")
@@ -47,10 +48,10 @@
 
 (comment ; 0 "Try it out!"
   (do
+    ;; LEARNING OBJECTIVES: Get familiar with switching to a new exercise and using the hints.
     (defsc Root0 [_ _]
       (h1 "Hello, I am a Fulcro app from the exercise 0!"))
 
-    ;; Send this whole `do` to the REPL. Do you see the UI change in the browser?
     (render! Root0)
 
     (comment ; try running the hint fn 3 times!
@@ -62,6 +63,7 @@
 
 (comment ; 1 "Hard-coded DOM"
   (do
+    ;; TASK:
     ;; Complete the body of the Root1 component to render the following html:
     ;;
     ;; <div>
@@ -73,6 +75,11 @@
     ;;   </ul>
     ;; </div>
     ;;
+    ;; LEARNING OBJECTIVES: Get familiar with creating elements and passing in props.
+    ;;
+    ;; RESOURCES:
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_rendering_dom_the_body_of_a_component
+    ;; - https://reactjs.org/docs/dom-elements.html#style
     (defsc Root1 [_ _]
       {}
       "TODO")
@@ -81,9 +88,17 @@
 
 (comment ; 2 "Extracting a child component"
   (do
+    ;; TASK:
     ;; Refactor the previous solution by moving the `<li>` into a separate
     ;; component called `ValuePropositionPoint` and `map` over the provided
     ;; `value-proposition-points` to produce the whole list.
+    ;;
+    ;; LEARNING OBJECTIVES:
+    ;; - Creating and using Fulcro components
+    ;; - Creating elements based on data
+    ;;
+    ;; RESOURCES:
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_the_anatomy_of_a_fulcro_component_query_ident_body
     (def value-proposition-points
       [{:proposition/label "Malleable"} {:proposition/label "Full-stack"} {:proposition/label "Well-designed"}])
 
@@ -101,10 +116,17 @@
 
 (comment ; 3 "Externalizing data"
   (do
+    ;; TASK:
     ;; We still want to render the same HTML but this time we want to read the
     ;; data from Fulcro's client DB, where it is inserted by `init-and-render!`.
     ;; Start from the previous solution but replace the hardcoded text and global
     ;; def with props.
+    ;;
+    ;; LEARNING OBJECTIVES:
+    ;; - Use Fulcro state management as it is meant to be used, reading from the Client DB
+    ;;
+    ;; RESOURCES:
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_the_anatomy_of_a_fulcro_component_query_ident_body
     (defsc Root3 [_ _]
       {}
       "TODO")
@@ -124,9 +146,21 @@
 
 (comment ; 4 "Insert data into the client DB with merge/merge!"
   (do
+    ;; TASK:
     ;; Again we build on the previous solution but instead of inserting the data
     ;; at app initialization, we will revert to ordinary `render!` and insert them
     ;; manually with a call to `merge/merge!`
+    ;;
+    ;; LEARNING OBJECTIVES:
+    ;; - Reason about data ingestion and representation
+    ;; - Use Fulcro Inspect
+    ;; - Understand merge! as a crucial step on the path to load!
+    ;;
+    ;; RESOURCES:
+    ;; - the docs for merge-component! (https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_pre_study_merging_data_into_the_client_db_with_merge_component)
+    ;;   are relevant because merge! is very similar to merge-component! but for the Root instead of
+    ;;   some child component (and without the need for an ident)
+    ;; - https://book.fulcrologic.com/#_using_com_fulcrologic_fulcro_componentsmerge
     (defsc Root4 [_ _]
       {}
       "TODO")
@@ -143,16 +177,28 @@
 
 (comment ; 5 "Normalization and merge-component!"
   (do
+    ;; TASK:
     ;; Let's see how to insert data into the client DB for our UI to display!
     ;; We have this UI:
     ;; Root1
     ;;   Team(s)
     ;;     Player(s)
     ;;       Address
-    ;; and a tree of data  to give to it. Read on!
+    ;; and a tree of data to give to it. There is now a few tasks awaiting you,
+    ;; described in comments inside the code below. So read on!
     ;;
     ;; BEWARE: The provided code on purpose omits some things you would normally have included in your components
-
+    ;;
+    ;; LEARNING OBJECTIVES:
+    ;; - Understand idents and their use by Fulcro
+    ;; - Reason about data normalization
+    ;; - Understand merge-component! as another crucial step on the path to load!
+    ;;
+    ;; RESOURCES:
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_components_query
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_components_ident
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_pre_study_merging_data_into_the_client_db_with_merge_component
+    ;; - https://book.fulcrologic.com/#_using_mergemerge_component
     (defsc Address [_ {city :address/city}]
       {:query [:address/city]}
       (p "City: " city))
@@ -219,6 +265,7 @@
 
 (comment ; 6 Client-side mutations
   (do
+    ;; TASK:
     ;; Enable the user to select individual elements or all at once
     ;; and delete these from the Client DB. (No remote in this exercises.)
     ;;
@@ -226,17 +273,27 @@
     ;; and trigger them in the :onClick handlers below instead of the current `println`.
     ;; Keep to the suggested inputs of those mutations, to make comparison easier.
     ;;
-    ;; => You will practice defining mutations and operating on the client DB data.
-    ;;
     ;; (Note: We could have structured the mutations in a simpler way. But this one
     ;; provides you a sufficient challenge.)
     ;;
     ;; Tips:
     ;; - It is often useful to put most mutation logic into a pure helper fn state-map -> state-map
     ;;   (often with the same name but ending with *)
-    ;; - Get the current state-map via `@(::app/state-atom app6)` to play with your code in the REPL
+    ;; - Get the current state-map via `(app/current-state app6)` to play with your code in the REPL
     ;; - Use Fulcro Dev Tools to look at the database and Transactions
     ;; - Check `(hint 6)` is you need help
+    ;;
+    ;; LEARNING OBJECTIVES:
+    ;; - React to user actions
+    ;; - Create and trigger a mutation
+    ;; - Use and manipulate the data in the Client DB
+    ;; - Understand the need for UI-only (`:ui/*`) props
+    ;; - Use Fulcro Inspect to explore the client DB and to troubleshoot transactions/mutations
+    ;;
+    ;; RESOURCES:
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_changing_global_data_and_performing_remote_calls_mutations
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#def-clientdb
+    ;; - Fulcro Inspect and its parts: https://blog.jakubholy.net/2020/troubleshooting-fulcro/#_know_your_tools
 
     (defn make-player->team
       "A helper function to create a 'lookup' so that we can easily find a player's team.
@@ -301,10 +358,24 @@
 
 (comment ; 7 load!-ing data from a remote
   (do
+    ;; TASK:
     ;; Learn how to load! data and practice using Fulcro Inspect
     ;; This is similar to #5 but with merge-component! replaced with load!
     ;; We now run a mock, in-browser server (with a real Pathom).
     ;; Read on to find the task your should do.
+    ;;
+    ;; LEARNING OBJECTIVES:
+    ;; - Use load!, with targeting
+    ;; - Create Pathom resolvers
+    ;; - Use the EQL and Network tabs of Fulcro Inspect
+    ;; - Use load markers to track the state of data loading
+    ;;
+    ;; RESOURCES:
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_loading_remote_data
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_targeting_adding_references_to_the_new_data_to_existing_entities
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_how_to
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_when_to_load
+    ;; - https://fulcro-community.github.io/guides/tutorial-minimalist-fulcro/#_bonus_tracking_loading_state_with_load_markers
 
     ;; --- "Frontend" UI ---
     (defsc Address [_ {city :address/city}]
@@ -330,7 +401,7 @@
     (defsc Root7 [this {teams :teams :as props}]
       {:query [{:teams (comp/get-query Team)}]}
       (div
-        ;; TASK 2 (see below) - un-comment and complete this code:
+        ;; Code for task 2 (described further down) - un-comment and complete this code:
         ;(button {:type "button"
         ;         :onClick #(println "df/load! the data from here")} "Load data")
         (let [loading? false] ; scaffolding for TASK 5

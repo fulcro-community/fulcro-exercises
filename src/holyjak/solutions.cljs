@@ -9,22 +9,32 @@
     [com.fulcrologic.fulcro.components :as comp :refer [defsc transact!]]
     [com.fulcrologic.fulcro.data-fetch :as df]
     [com.fulcrologic.fulcro.mutations :refer [defmutation]]
-    [com.fulcrologic.fulcro.dom :as dom :refer [button div form h1 h2 h3 input label li ol p]]
+    [com.fulcrologic.fulcro.dom :as dom :refer [button div form h1 h2 h3 input label li ol p ul]]
     [com.wsscode.pathom.connect :as pc :refer [defresolver]]))
+
+;; TIP: Use your editor's powers to collapse all the comments and only open the one you want to study
+;;      (Cursive: 'Collapse All', `Shift Cmd -` on Mac)
 
 (comment ; 1 "Hard-coded DOM"
   (do
     (defsc Root1 [_ _]
            {}
            #_"TODO"
-           (dom/div
-             (dom/h1 :#title {:style {:textAlign "center"}} "Fulcro is:")
-             (dom/ul
-               (dom/li "Malleable")
-               (dom/li "Full-stack")
-               (dom/li "Well-designed"))))
+           (div
+             (h1 :#title {:style {:textAlign "center"}} "Fulcro is:")
+             (ul
+               (li "Malleable")
+               (li "Full-stack")
+               (li "Well-designed"))))
 
     (render! Root1)))
+
+
+
+
+
+
+
 
 (comment ; 2 "Extracting a child component"
   (do
@@ -32,34 +42,41 @@
       [{:proposition/label "Malleable"} {:proposition/label "Full-stack"} {:proposition/label "Well-designed"}])
 
     (defsc ValuePropositionPoint [_ {:proposition/keys [label]}]
-           (dom/li label))
+           (li label))
 
     (def ui-value-proposition-point (comp/factory ValuePropositionPoint {:keyfn :proposition/label}))
 
     (defsc Root2 [_ _]
            {}
            #_"TODO"
-           (dom/div
-             (dom/h1 :#title {:style {:textAlign "center"}} "<2> Fulcro is:")
-             (dom/ul (map ui-value-proposition-point value-proposition-points))))
+           (div
+             (h1 :#title {:style {:textAlign "center"}} "<2> Fulcro is:")
+             (ul (map ui-value-proposition-point value-proposition-points))))
 
     (render! Root2)
     ,))
+
+
+
+
+
+
+
 
 (comment ; 3 "Externalizing data"
   (do
     (defsc ValuePropositionPoint [_ {:proposition/keys [label]}]
            {:query [:proposition/label]}
-           (dom/li label))
+           (li label))
 
     (def ui-value-proposition-point (comp/factory ValuePropositionPoint {:keyfn :proposition/label}))
 
     (defsc Root3 [_ {:page/keys [heading value-proposition-points]}]
            {:query [:page/heading {:page/value-proposition-points (comp/get-query ValuePropositionPoint)}]}
            #_"TODO"
-           (dom/div
-             (dom/h1 :#title {:style {:textAlign "center"}} "hdr:" heading)
-             (dom/ul (map ui-value-proposition-point value-proposition-points))))
+           (div
+             (h1 :#title {:style {:textAlign "center"}} "hdr:" heading)
+             (ul (map ui-value-proposition-point value-proposition-points))))
 
     (init-and-render!
       Root3
@@ -70,20 +87,27 @@
                       {:proposition/label "Well-designed"}]})
     ,))
 
+
+
+
+
+
+
+
 (comment ; 4 "Insert data into the client DB with merge/merge!"
   (do
     (defsc ValuePropositionPoint [_ {:proposition/keys [label]}]
            {:query [:proposition/label]}
-           (dom/li label))
+           (li label))
 
     (def ui-value-proposition-point (comp/factory ValuePropositionPoint {:keyfn :proposition/label}))
 
     (defsc Root4 [_ {:page/keys [heading value-proposition-points]}]
            {:query [:page/heading {:page/value-proposition-points (comp/get-query ValuePropositionPoint)}]}
            #_"TODO"
-           (dom/div
-             (dom/h1 :#title {:style {:textAlign "center"}} "hdr:" heading)
-             (dom/ul (map ui-value-proposition-point value-proposition-points))))
+           (div
+             (h1 :#title {:style {:textAlign "center"}} "hdr:" heading)
+             (ul (map ui-value-proposition-point value-proposition-points))))
 
     (def app4 (render! Root4))
 
@@ -97,6 +121,13 @@
       (comp/get-query Root4))
     (app/schedule-render! app4) ; merge! only inserts the data, does not tell the app to re-render
     ,))
+
+
+
+
+
+
+
 
 (comment ; 5 "Normalization and merge-component!"
   ;; VARIANT 5.1
@@ -194,6 +225,13 @@
     (-> data-tree :teams first)
     :append [:teams])
   ,)
+
+
+
+
+
+
+
 
 (comment ; 6 Client-side mutations
   ;; NOTE: There are many ways to implement the details, this is just one
