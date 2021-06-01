@@ -38,14 +38,22 @@
           deref
           cljs.pprint/pprint))
 
-(defn init-and-render!
-  "Like [[render!]] but also sets the Fulcro app's initial client DB."
-  ([RootComponent initial-db] (init-and-render! RootComponent initial-db nil))
-  ([RootComponent initial-db opts]
+(defn config-and-render!
+  "Renders the given root component, also creating a new Fulcro app for it.
 
+  Args:
+  - `RootComponent` - the class of the component to render
+  - `opts` - options, including:
+    - `:resolvers` - a sequence of Pathom resolvers; if provided, a Pathom 'backend'
+       (though running in the browser) with these resolvers will be set up
+    - `:initial-db` - the initial value of the client DB (normalized)
+
+  Return the new Fulcro app."
+  ([RootComponent] (config-and-render! RootComponent nil))
+  ([RootComponent {:keys [initial-db resolvers]}]
    (let [current-root? (= (some-> @current-app app/root-class .-name)
                           (.-name RootComponent))
-         remotes       (some-> (:resolvers opts) seq mock-remote)
+         remotes       (some-> resolvers seq mock-remote)
          app           (if current-root? @current-app (app/fulcro-app
                                                         {:initial-db initial-db
                                                          :remotes    remotes}))]
@@ -56,20 +64,6 @@
      (println "LOG: Rendering" RootComponent "...")
      (app/mount! app RootComponent "app" {:initialize-state? (some? initial-db)})
      app)))
-
-(defn render!
-  "Renders the given root component, also creating a new Fulcro app for it.
-
-  Args:
-  - `RootComponent` - the class of the component to render
-  - `opts` - options, including:
-    - `:resolvers` - a sequence of Pathom resolvers; if provided, a Pathom 'backend'
-       (though running in the browser) with these resolvers will be set up
-
-  Return the new Fulcro app."
-  ([RootComponent] (render! RootComponent nil))
-  ([RootComponent opts]
-   (init-and-render! RootComponent nil opts)))
 
 (defn refresh []
   (when-let [app @current-app]
@@ -87,7 +81,7 @@
    2 ["Create defsc ValuePropositionPoint, remember to use comp/factory. You do not need any query, just use the props the parent passes in."
       "2.b Look at the options that comp/factory takes. Remember you can use :proposition/label as a function."]
    3 ["Remember to make a join with comp/get-query to include the child's (i.e. ValuePropositionPoint's) query in Root"]
-   4 ["Simply pass in to `merge!` the same data-tree that we passed as initial-db to `init-and-render!` in the previous exercise."
+   4 ["Simply pass in to `merge!` the same data-tree that we passed as initial-db to `config-and-render!` in the previous exercise."
       "`merge!` also needs a query; and since we are passing all the app data, it should be the root query"]
    5 ["5.1a You want to use the query of the root component, Root5"
       "5.1b Use `comp/get-query` to get it!"

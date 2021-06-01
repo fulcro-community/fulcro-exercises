@@ -18,7 +18,7 @@
   - See 'Troubleshooting and getting help during the exercises' in the README
   "
   (:require
-    [holyjak.fulcro-exercises.impl :refer [hint init-and-render! render! show-client-db]]
+    [holyjak.fulcro-exercises.impl :refer [hint config-and-render! show-client-db]]
     [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro.algorithms.data-targeting :as targeting]
     [com.fulcrologic.fulcro.algorithms.normalized-state :as norm]
@@ -43,7 +43,7 @@
         (p "This is an example what an exercise looks like while you work on it.")
         (p "Just comment this exercises out as describe in the code comment above and go on to the next.")))
 
-    (render! Root00)
+    (config-and-render! Root00)
     ,))
 
 (comment ; 0 "Try it out!"
@@ -52,7 +52,7 @@
     (defsc Root0 [_ _]
       (h1 "Hello, I am a Fulcro app from the exercise 0!"))
 
-    (render! Root0)
+    (config-and-render! Root0)
 
     (comment ; try running the hint fn 3 times!
       (hint 0)
@@ -84,7 +84,7 @@
       {}
       "TODO")
 
-    (render! Root1)))
+    (config-and-render! Root1)))
 
 (comment ; 2 "Extracting a child component"
   (do
@@ -106,7 +106,7 @@
       {}
       "TODO")
 
-    (render! Root2)
+    (config-and-render! Root2)
     ; (hint 2)
 
     ;; Task 2.b: Make sure you do not get the React error <<Each child in a list
@@ -118,7 +118,7 @@
   (do
     ;; TASK:
     ;; We still want to render the same HTML but this time we want to read the
-    ;; data from Fulcro's client DB, where it is inserted by `init-and-render!`.
+    ;; data from Fulcro's client DB, where it is inserted by `config-and-render!`.
     ;; Start from the previous solution but replace the hardcoded text and global
     ;; def with props.
     ;;
@@ -131,13 +131,14 @@
       {}
       "TODO")
 
-    (init-and-render!
+    (config-and-render!
       Root3
-      {:page/heading "<3> Fulcro is:"
-       :page/value-proposition-points
-                     [{:proposition/label "Malleable"}
-                      {:proposition/label "Full-stack"}
-                      {:proposition/label "Well-designed"}]})
+      {:initial-db
+       {:page/heading "<3> Fulcro is:"
+        :page/value-proposition-points
+                      [{:proposition/label "Malleable"}
+                       {:proposition/label "Full-stack"}
+                       {:proposition/label "Well-designed"}]}})
 
     ;(hint 3)
     ;; Tip: Use Fulcro Inspect to see the content of the client DB
@@ -148,7 +149,7 @@
   (do
     ;; TASK:
     ;; Again we build on the previous solution but instead of inserting the data
-    ;; at app initialization, we will revert to ordinary `render!` and insert them
+    ;; at app initialization, we will revert to the render without :initial-db and insert them
     ;; manually with a call to `merge/merge!`
     ;;
     ;; LEARNING OBJECTIVES:
@@ -165,7 +166,7 @@
       {}
       "TODO")
 
-    (def app4 (render! Root4))
+    (def app4 (config-and-render! Root4))
 
     ;; What do you think the client DB will look like? Think, write it down, then check it
     ;; using Fulcro Inspect - DB (or `(show-client-db)`)
@@ -230,7 +231,7 @@
                                 #:player{:name "Ola" :address #:address{:city "Trondheim"} :id 2}]}]})
 
     ;; Render the app (without any data so far):
-    (def app5 (render! Root5))
+    (def app5 (config-and-render! Root5))
 
     ;; Now:
     ;; 1. Uncomment, complete, and run the merge/merge! call below to insert the data-tree into
@@ -343,7 +344,7 @@
                 "Delete selected")
         (map ui-team teams)))
 
-    (def app6 (render! Root6))
+    (def app6 (config-and-render! Root6))
 
     (run!
       #(merge/merge-component! app6 Team % :append [:teams])
@@ -429,7 +430,7 @@
         2 #:address{:id 2 :city "Trondheim"}))
 
     ;; Render the app, with a backend using these resolvers
-    (def app7 (render! Root7 {:resolvers [address my-very-awesome-teams]}))
+    (def app7 (config-and-render! Root7 {:resolvers [address my-very-awesome-teams]}))
 
     ;; TODO: TASK 1 - use `df/load!` to load data from the my-very-awesome-teams
     (println "TODO: df/load! should be invoked here...")

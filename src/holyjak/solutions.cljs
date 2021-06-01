@@ -1,7 +1,7 @@
 (ns holyjak.solutions
   "Solutions to the exercises - check them against your and peek at them if you get stuck."
   (:require
-    [holyjak.fulcro-exercises.impl :refer [hint init-and-render! render! show-client-db]]
+    [holyjak.fulcro-exercises.impl :refer [hint config-and-render! show-client-db]]
     [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro.algorithms.data-targeting :as targeting]
     [com.fulcrologic.fulcro.algorithms.normalized-state :as norm]
@@ -27,7 +27,7 @@
                (li "Full-stack")
                (li "Well-designed"))))
 
-    (render! Root1)))
+    (config-and-render! Root1)))
 
 
 
@@ -53,7 +53,7 @@
              (h1 :#title {:style {:textAlign "center"}} "<2> Fulcro is:")
              (ul (map ui-value-proposition-point value-proposition-points))))
 
-    (render! Root2)
+    (config-and-render! Root2)
     ,))
 
 
@@ -78,13 +78,14 @@
              (h1 :#title {:style {:textAlign "center"}} "hdr:" heading)
              (ul (map ui-value-proposition-point value-proposition-points))))
 
-    (init-and-render!
+    (config-and-render!
       Root3
-      {:page/heading "<3> Fulcro is:"
-       :page/value-proposition-points
-                     [{:proposition/label "Malleable"}
-                      {:proposition/label "Full-stack"}
-                      {:proposition/label "Well-designed"}]})
+      {:initial-db
+       {:page/heading "<3> Fulcro is:"
+        :page/value-proposition-points
+                      [{:proposition/label "Malleable"}
+                       {:proposition/label "Full-stack"}
+                       {:proposition/label "Well-designed"}]}})
     ,))
 
 
@@ -109,7 +110,7 @@
              (h1 :#title {:style {:textAlign "center"}} "hdr:" heading)
              (ul (map ui-value-proposition-point value-proposition-points))))
 
-    (def app4 (render! Root4))
+    (def app4 (config-and-render! Root4))
 
     (merge/merge!
       app4
@@ -163,7 +164,7 @@
                                 #:player{:name "Ola" :address #:address{:city "Trondheim"} :id 2}]}]})
 
     ;; Render the app (without any data so far):
-    (def app5 (render! Root5))
+    (def app5 (config-and-render! Root5))
 
     (do (merge/merge! app5 data-tree (comp/get-query Root5))
         (app/schedule-render! app5))
@@ -206,7 +207,7 @@
                                 #:player{:name "Ola" :address #:address{:city "Trondheim"} :id 2}]}]})
 
     ;; Render the app (without any data so far):
-    (def app5 (render! Root5))
+    (def app5 (config-and-render! Root5))
 
     (do (merge/merge! app5 data-tree (comp/get-query Root5))
         (app/schedule-render! app5))
@@ -319,7 +320,7 @@
                       :onClick #(transact! this [(delete-selected nil)])} "Delete selected")
              (map ui-team teams)))
 
-    (def app6 (render! Root6))
+    (def app6 (config-and-render! Root6))
 
     (run!
       #(merge/merge-component! app6 Team % :append [:teams])
@@ -387,7 +388,7 @@
                    2 #:address{:id 2 :city "Trondheim"}))
 
     ;; Render the app, with a backend using these resolvers
-    (def app7 (render! Root7 {:resolvers [address my-very-awesome-teams]}))
+    (def app7 (config-and-render! Root7 {:resolvers [address my-very-awesome-teams]}))
 
     (df/load! app7 :teams Team) ; VARIANT 7.1; comment out for 7.2
 
@@ -433,7 +434,7 @@
         2 #:address{:id 2 :city "Trondheim"}))
 
     ;; Render the app, with a backend using these resolvers
-    (def app7 (render! Root7 {:resolvers [address my-very-awesome-teams player team]}))
+    (def app7 (config-and-render! Root7 {:resolvers [address my-very-awesome-teams player team]}))
 
     ,))
 
