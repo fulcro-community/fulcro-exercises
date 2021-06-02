@@ -1,4 +1,4 @@
-{:deps     {:aliases [:dev]}
+{:deps     {:aliases []}
  :http     {:port 9631} ; shadow control server
  :nrepl    {:port 9001}
  :dev-http {8000 "resources/public"}
