@@ -7,9 +7,9 @@ A follow-up to the [Minimalist Fulcro Tutorial](https://fulcro-community.github.
 * Studied the Minimalist Fulcro Tutorial
 * Familiar with Clojure, ClojureScript, and at least somewhat with shadow-cljs
 
-## Status
+## Feedback!
 
-Work in progress, though already useful. Please share your experiences and ideas with me so that I can improve the exercises! Get in touch with `@holyjak` in the [`#fulcro` channel of the Clojurians Slack](https://app.slack.com/client/T03RZGPFR/C68M60S4F) or in [Zulip](https://clojurians.zulipchat.com/) or by [starting a discussion](https://github.com/fulcro-community/fulcro-exercises/discussions) here at GitHub.
+Please share your experiences and ideas with me so that I can improve the exercises! Get in touch with `@holyjak` in the [`#fulcro` channel of the Clojurians Slack](https://app.slack.com/client/T03RZGPFR/C68M60S4F) or in [Zulip](https://clojurians.zulipchat.com/) or by [starting a discussion](https://github.com/fulcro-community/fulcro-exercises/discussions) here at GitHub.
 
 ## Usage
 
@@ -22,6 +22,8 @@ Compile the ClojureScript code and start a server for the UI:
     clojure -M:serve 
 
 NOTE: For Emacs start the server with `clojure -M:cider:serve` and connect to it using `M-x cider-connect-cljs`
+
+**BEWARE**: It might not work if your version of the [Clojure CLI](https://clojure.org/guides/getting_started#_clojure_installer_and_cli_tools) (`clojure --version`) is too old or, possibly, too new. The project has been tested with v.1.10.3.855.
 
 You can now see the application at http://localhost:8000. Open it in Chrome, where you have [installed Fulcro Inspect](https://book.fulcrologic.com/#_install_fulcro_inspect) and [enabled custom formatters](https://book.fulcrologic.com/#_configure_chrome_development_settings)!
 
