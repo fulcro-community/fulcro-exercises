@@ -301,7 +301,7 @@
     (defsc Team [this {:team/keys [name players] checked? :ui/checked?}]
            {:query [:team/id :team/name :ui/checked? {:team/players (comp/get-query Player)}]
             :ident :team/id}
-           (let [all-checked? (and (seq players) (every? :ui/checked? players))]
+           (let [all-checked? (boolean (and (seq players) (every? :ui/checked? players)))]
              (div (h2 "Team " name ":")
                   (label (input {:type    "checkbox"
                                  :checked all-checked?
