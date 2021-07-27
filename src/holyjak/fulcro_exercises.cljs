@@ -447,7 +447,7 @@
     ;; TODO: TASK 2 - replace loading data during initialization (above) with loading them on-demand, on the button click
 
     ;; TODO: TASK 3 - split ident resolvers for a team and a player out of `my-very-awesome-teams`, as we did for address;
-    ;;       Then play with them using Fulcro Inspect's EQL tab - fetch a particular person with just the name; ask for
+    ;;       Then play with them using Fulcro Inspect's EQL tab - fetch just the name of a particular person; ask for
     ;;       a property that does not exist (and check both the EQL tab and the Inspect's Network tab) - what does it look like?
 
     ;; TODO: TASK 4 - use targeting to fix a mismatch between a resolver and the UI: in `Root7`, rename `:teams` to `:all-teams`; how
