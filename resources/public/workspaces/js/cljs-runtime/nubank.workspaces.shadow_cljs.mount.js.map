@@ -1,0 +1,1 @@
+{"version":3,"sources":["nubank/workspaces/shadow_cljs/mount.cljs"],"mappings":";AAGA,AAACA","names":["nubank.workspaces.core.mount"],"sourcesContent":["(ns nubank.workspaces.shadow-cljs.mount\n  (:require [nubank.workspaces.core :refer [mount]]))\n\n(mount)\n"]}
