@@ -1,2 +1,3 @@
 {:tasks 
- {serve (clojure "-M:serve")}}
+ {serve (clojure "-M:serve")
+  serve-puzzles (clojure "-M:serve-puzzles")}}

@@ -15,7 +15,10 @@ Please share your experiences and ideas with me so that I can improve the exerci
 
 Clone this repo, enter the directory. Then install prerequisites:
 
-    npm install
+    npm install 
+    # or: yarn install
+
+### Part 1: The exercises
 
 Compile the ClojureScript code and start a server for the UI:
 
@@ -33,7 +36,7 @@ Finally, open the `holyjak.fulcro-exercises` namespace and get coding, following
 
 **TIP**: Make sure that you select the correct _App_ at the bottom of Fulcro Inspect, if there are multiple (or hard-reload the page to get rid of all the past ones).
 
-## Troubleshooting and getting help during the exercises
+#### Troubleshooting and getting help during the exercises
 
 Use repeatedly `(hint <exercise number>)` (as long as there are any more hints for the exercise) to get useful tips when you get stuck.
 
@@ -41,11 +44,26 @@ Leverage the [Fulcro Troubleshooting Decision Tree](https://blog.jakubholy.net/2
 
 Leverage Fulcro Inspect (especially the DB and perhaps Element tabs), check the Chrome JS Console for warnings and errors.
 
-### Various problems and solutions
+#### Various problems and solutions
 
-#### Fulcro Inspect shows an empty client DB
+##### Fulcro Inspect shows an empty client DB
 
 It might help to close it, reload the page, then open it again.
+
+### Part 2: Fulcro Puzzles
+
+After you have completed the exercises, you can check you insight and troubleshooting skill by fixing the broken
+pieces of code presented in the `holyjak.fulcro-exercises.puzzles.puzzles-ws` namespace.
+
+To run the puzzles, stop the exercises `clojure` process and run instead this:
+
+    clojure -M:serve-puzzles # add :cider similarly as in exercises, if using Emacs
+
+then navigate to http://localhost:8023/ and in the left-side menu, under _Cards_, select the first puzzle card.
+
+Try to fix the code so that the card does what it is supposed to. Remember to use primarily the Fulcro Database and Fulcro
+Inspector for the troubleshooting! If you get stuck or after you finish your solution,
+compare it to the solution in the `holyjak.fulcro-exercises.puzzles.solutions-ws` namespace.
 
 ## License
 

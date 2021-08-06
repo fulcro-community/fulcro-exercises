@@ -1,4 +1,4 @@
-{:deps     {:aliases []}
+{:deps     {:aliases [:serve-puzzles]}
  :http     {:port 9631} ; shadow control server
  :nrepl    {:port 9001}
  :dev-http {8000 "resources/public"}
@@ -12,4 +12,12 @@
                        :devtools   {:preloads   [shadow.remote.runtime.cljs.browser ; Shadow Inspect tab support
                                                  com.fulcrologic.fulcro.inspect.preload
                                                  com.fulcrologic.fulcro.inspect.dom-picker-preload]
-                                    :after-load holyjak.fulcro-exercises.impl/refresh}}}}
+                                    :after-load holyjak.fulcro-exercises.impl/refresh}}
+            :workspaces {:target     nubank.workspaces.shadow-cljs.target
+                         :ns-regexp  "-(test|ws)$"
+                         :output-dir "resources/public/workspaces/js"
+                         :asset-path "/workspaces/js"
+                         :devtools   {:preloads           [com.fulcrologic.fulcro.inspect.preload]
+                                      :http-root          "resources/public/workspaces"
+                                      :http-port          8023
+                                      :http-resource-root "."}}}}

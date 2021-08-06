@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "author": "Jakub Holý <jakubholy@jakubholy.net> (https://blog.jakubholy.net)",
   "dependencies": {
+    "highlight.js": "^9.12.0",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-grid-layout": "^0.16.6"
+  },
+  "devDependencies": {
+    "shadow-cljs": "^2.15.2"
   }
 }
