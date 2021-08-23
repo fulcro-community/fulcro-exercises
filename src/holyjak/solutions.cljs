@@ -421,7 +421,10 @@
 
     (defresolver player [_ {id :player/id}] ; an ident resolver
       {::pc/input #{:player/id}
-       ::pc/output [:player/id :player/name :player/address]}
+       ::pc/output [:player/id :player/name
+                    ;; NOTE: We need this 👇 instead of just `:player/address` so that autocomplete
+                    ;; in Fulcro Inspect - EQL understands this is address and can get to id, city
+                    {:player/address [:address/id]}]}
       (case id
         1 #:player{:id 1 :name "Luna" :address {:address/id 1}}
         2 #:player{:id 2 :name "Sol" :address  {:address/id 2}}))
