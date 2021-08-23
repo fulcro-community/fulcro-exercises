@@ -420,7 +420,10 @@
     (defresolver my-very-awesome-teams [_ _] ; a global resolver
       {::pc/input  #{}
        ::pc/output [{:teams [:team/id :team/name
-                             {:team/players [:player/id :player/name :player/address]}]}]}
+                             {:team/players [:player/id :player/name 
+                                             ;; NOTE: We need this 👇 instead of just `:player/address` so that autocomplete
+                                             ;; in Fulcro Inspect - EQL understands this is address and can get to id, city
+                                             {:player/address [:address/id]}]}]}]}
       {:teams [#:team{:name "Hikers" :id :hikers
                       :players [#:player{:id 1 :name "Luna" :address {:address/id 1}}
                                 #:player{:id 2 :name "Sol" :address {:address/id 2}}]}]})

@@ -13,3 +13,5 @@ node_modules
 .shadow-cljs/
 resources/public/js
 resources/public/workspaces/js
+.lsp
+lsp
