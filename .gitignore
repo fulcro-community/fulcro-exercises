@@ -15,3 +15,4 @@ resources/public/js
 resources/public/workspaces/js
 .lsp/sqlite.db
 lsp
+.calva/output-window/output.calva-repl
