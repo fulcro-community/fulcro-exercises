@@ -174,7 +174,6 @@
     ;; What do you think the client DB will look like? Think, write it down, then check it
     ;; using Fulcro Inspect - DB (or `(show-client-db)`)
     (merge/merge! app4 nil nil) ; TODO Implement
-    (app/schedule-render! app4) ; merge! only inserts the data, does not tell the app to re-render
     ; (hint 4)
     ; (hint 4)
     ,))
@@ -239,8 +238,7 @@
     ;; Now:
     ;; 1. Uncomment, complete, and run the merge/merge! call below to insert the data-tree into
     ;;    the client DB. Check the UI shows it.
-    (comment (do (merge/merge! ...)
-                 (app/schedule-render! app5)))
+    (comment (merge/merge! ...))
     ; (hint 5)
     ; (hint 5)
 
@@ -260,8 +258,6 @@
     ;;    What is the correct target component? How to make sure the data looks
     ;;    just like before?
     ;;   Really try your best to get the make the right merge-component! call!
-    ;;   Note: You do not need to call app/schedule-render!,
-    ;;   merge-component! does schedule a render
     ; (hint 5)
     ; (hint 5)
     ; (hint 5)

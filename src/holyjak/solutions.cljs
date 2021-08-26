@@ -120,7 +120,6 @@
                       {:proposition/label "Full-stack"}
                       {:proposition/label "Well-designed"}]}
       (comp/get-query Root4))
-    (app/schedule-render! app4) ; merge! only inserts the data, does not tell the app to re-render
     ,))
 
 
@@ -166,8 +165,7 @@
     ;; Render the app (without any data so far):
     (def app5 (config-and-render! Root5))
 
-    (do (merge/merge! app5 data-tree (comp/get-query Root5))
-        (app/schedule-render! app5))
+    (merge/merge! app5 data-tree (comp/get-query Root5))
     ,))
 
 (comment ; 5 "Normalization and merge-component!"
@@ -209,8 +207,7 @@
     ;; Render the app (without any data so far):
     (def app5 (config-and-render! Root5))
 
-    (do (merge/merge! app5 data-tree (comp/get-query Root5))
-        (app/schedule-render! app5))
+    (merge/merge! app5 data-tree (comp/get-query Root5))
     ,))
 
 (comment ; 5 "Normalization and merge-component!"
