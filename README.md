@@ -25,7 +25,7 @@ Clone this repo, enter the directory. Then install prerequisites:
 Compile the ClojureScript code and start a server for the UI:
 
     npx shadow-cljs watch main
-    # or `bb serve` if you have Babashka
+    # or `bb run` if you have Babashka
 
 NOTE: For Calva, do instead start the REPL from the editor - [run Jack-in](https://calva.io/connect/#jack-in-let-calva-start-the-repl-for-you), selecting _shadow-cljs_ then the `:main` build. Remember to load the page in the browser, see below.
 
@@ -62,7 +62,7 @@ After you have completed the exercises, you can check you insight and troublesho
 To run the puzzles, stop the exercises process and run instead this:
 
     npx shadow-cljs watch puzzles
-    # or `bb serve-puzzles` if you have Babashka
+    # or `bb run-puzzles` if you have Babashka
 
 NOTE: For Calva, do instead start the REPL from the editor - [run Jack-in](https://calva.io/connect/#jack-in-let-calva-start-the-repl-for-you), selecting _shadow-cljs_ then the `:puzzles` build.
 

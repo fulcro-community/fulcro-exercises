@@ -1,3 +1,4 @@
+;; OPTIONAL - for running the app via babashka tasks instead of manually
 {:tasks 
  {:requires ([babashka.fs :as fs]) 
   npm-inst (when-not (fs/directory? "node_modules")
