@@ -1,3 +1,6 @@
 {:tasks 
- {serve (clojure "-M:serve")
-  serve-puzzles (clojure "-M:serve-puzzles")}}
+ {:requires ([babashka.fs :as fs]) 
+  npm-inst (when-not (fs/directory? "node_modules")
+             (shell "npm install"))
+  serve {:depends [npm-inst], :task (shell "npx shadow-cljs watch main")}
+  serve-puzzles {:depends [npm-inst], :task (shell "npx shadow-cljs watch puzzles")}}}

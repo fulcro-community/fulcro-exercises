@@ -458,6 +458,8 @@
     ,))
 
 ;; TODO Additional exercises:
+;; - create/delete/create+delete <> tmpids; simulated failure => undo the optimistic change?
+;; - link queries & more from https://blog.jakubholy.net/2020/fulcro-divergent-ui-data/
 ;; - anything else from the Minim. Fulcro Tutorial should be added?
 ;;   - Initial state propagation?
 ;;   - Computed props for a callback or parent-visible prop

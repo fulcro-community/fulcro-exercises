@@ -13,18 +13,23 @@ Please share your experiences and ideas with me so that I can improve the exerci
 
 ## Usage
 
+Prerequisites: same as the [shadow-cljs requirements](https://github.com/thheller/shadow-cljs#requirements).
+
 Clone this repo, enter the directory. Then install prerequisites:
 
     npm install 
-    # or: yarn install
+    # or: yarn install  # reportedly yarn < v3 as of 8/2021
 
 ### Part 1: The exercises
 
 Compile the ClojureScript code and start a server for the UI:
 
-    clojure -M:serve 
+    npx shadow-cljs watch main
+    # or `bb serve` if you have Babashka
 
-NOTE: For Emacs start the server with `clojure -M:cider:serve` and connect to it using `M-x cider-connect-cljs`
+NOTE: For Calva, do instead start the REPL from the editor - [run Jack-in](https://calva.io/connect/#jack-in-let-calva-start-the-repl-for-you), selecting _shadow-cljs_ then the `:main` build. Remember to load the page in the browser, see below.
+
+NOTE: For Emacs, connect to the REPL using `M-x cider-connect-cljs`
 
 **BEWARE**: It might not work if your version of the [Clojure CLI](https://clojure.org/guides/getting_started#_clojure_installer_and_cli_tools) (`clojure --version`) is too old or, possibly, too new. The project has been tested with v.1.10.3.855.
 
@@ -52,14 +57,16 @@ It might help to close it, reload the page, then open it again.
 
 ### Part 2: Fulcro Puzzles
 
-After you have completed the exercises, you can check you insight and troubleshooting skill by fixing the broken
-pieces of code presented in the `holyjak.fulcro-exercises.puzzles.puzzles-ws` namespace.
+After you have completed the exercises, you can check you insight and troubleshooting skill by fixing the broken pieces of code presented in the `holyjak.fulcro-exercises.puzzles.puzzles-ws` namespace.
 
-To run the puzzles, stop the exercises `clojure` process and run instead this:
+To run the puzzles, stop the exercises process and run instead this:
 
-    clojure -M:serve-puzzles # add :cider similarly as in exercises, if using Emacs
+    npx shadow-cljs watch puzzles
+    # or `bb serve-puzzles` if you have Babashka
 
-then navigate to http://localhost:8023/ and in the left-side menu, under _Cards_, select the first puzzle card.
+NOTE: For Calva, do instead start the REPL from the editor - [run Jack-in](https://calva.io/connect/#jack-in-let-calva-start-the-repl-for-you), selecting _shadow-cljs_ then the `:puzzles` build.
+
+Then navigate to http://localhost:8023/ and in the left-side menu, under _Cards_, select the first puzzle card.
 
 Try to fix the code so that the card does what it is supposed to. Remember to use primarily the Fulcro Database and Fulcro
 Inspector for the troubleshooting! If you get stuck or after you finish your solution,

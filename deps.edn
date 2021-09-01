@@ -3,18 +3,29 @@
         com.fulcrologic/fulcro {:mvn/version "3.5.2"}
         com.wsscode/pathom     {:mvn/version "2.3.1"}}
  :aliases
- {:serve {:jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
-          :main-opts ["-m" "shadow.cljs.devtools.cli" "watch" "main"]
-          :extra-deps {thheller/shadow-cljs                {:mvn/version "2.14.5"}
-                       binaryage/devtools                  {:mvn/version "1.0.0"}}}
-  ;; Activate if you want to `M-x cider-connect-cljs` from Emacs:
-  :cider {:extra-deps {cider/cider-nrepl {:mvn/version "0.25.9"}           ; must be added for M-x cider-connect-cljs
+ {:dev   {:extra-deps {thheller/shadow-cljs {:mvn/version "2.15.5"}
+                       binaryage/devtools   {:mvn/version "1.0.0"}
+                       ;; for Workspaces:
+                       com.github.awkay/workspaces {:mvn/version "1.0.2"}
+                       ;; Emacs requirements for M-x cider-connect-cljs:
+                       cider/cider-nrepl {:mvn/version "0.25.9"}
                        cider/piggieback {:mvn/version "0.5.1"}}}
+;; NOTE: Running shadow via clojure -M:... does not work well with Calva's Jack-in, since it wants to do
+;;       its own main opts
+;;   :serve {:jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
+;;           :main-opts ["-m" "shadow.cljs.devtools.cli" "watch" "main"]
+;;           :extra-deps {thheller/shadow-cljs                {:mvn/version "2.14.5"}
+;;                        binaryage/devtools                  {:mvn/version "1.0.0"}}}
+;;   ;; Activate if you want to `M-x cider-connect-cljs` from Emacs:
+;;   :cider {:extra-deps {cider/cider-nrepl {:mvn/version "0.25.9"}           ; must be added for M-x cider-connect-cljs
+;;                        cider/piggieback {:mvn/version "0.5.1"}}}
 
-  :serve-puzzles {:jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
-                  :main-opts ["-m" "shadow.cljs.devtools.cli" "watch" "workspaces"]
-                  :extra-deps {thheller/shadow-cljs                {:mvn/version "2.14.5"}
-                               binaryage/devtools                  {:mvn/version "1.0.0"}
-                               ;; for Workspaces:
-                               ;com.github.awkay/workspaces {:mvn/version "1.0.2"}
-                               com.github.awkay/workspaces {:local/root "/Users/holyjak/tmp/delme/workspaces"}}}}}
+;;   :serve-puzzles {:jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
+;;                   :main-opts ["-m" "shadow.cljs.devtools.cli" "watch" "workspaces"]
+;;                   :extra-deps {thheller/shadow-cljs                {:mvn/version "2.14.5"}
+;;                                binaryage/devtools                  {:mvn/version "1.0.0"}
+;;                                ;; for Workspaces:
+;;                                com.github.awkay/workspaces {:mvn/version "1.0.2"}}}}
+  }}
+                               
+                               
