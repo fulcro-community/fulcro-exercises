@@ -8,7 +8,8 @@
                        ;; for Workspaces:
                        com.github.awkay/workspaces {:mvn/version "1.0.2"}
                        ;; Emacs requirements for M-x cider-connect-cljs:
-                       cider/cider-nrepl {:mvn/version "0.25.9"}
+                       cider/cider-nrepl {:mvn/version "0.26.0"}
+                       ;; FIXME: Do we really need piggieback for Emacs?!
                        cider/piggieback {:mvn/version "0.5.1"}}}
 ;; NOTE: Running shadow via clojure -M:... does not work well with Calva's Jack-in, since it wants to do
 ;;       its own main opts

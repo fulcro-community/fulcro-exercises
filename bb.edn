@@ -2,5 +2,8 @@
  {:requires ([babashka.fs :as fs]) 
   npm-inst (when-not (fs/directory? "node_modules")
              (shell "npm install"))
-  serve {:depends [npm-inst], :task (shell "npx shadow-cljs watch main")}
-  serve-puzzles {:depends [npm-inst], :task (shell "npx shadow-cljs watch puzzles")}}}
+  run {:depends [npm-inst], :task (shell "npx shadow-cljs watch main")}
+  run-puzzles {:depends [npm-inst], :task (shell "npx shadow-cljs watch puzzles")}
+  ;; for backwards compatibility:
+  serve {:depends [run]}
+  serve-puzzles {:depends [run-puzzles]}}}
