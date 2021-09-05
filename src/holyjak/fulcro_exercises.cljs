@@ -438,8 +438,9 @@
     (println "TODO: df/load! should be invoked here...")
     ;; (Remember `(hint 7)` when in need.)
     ;; Now check Fulcro Inspect - the Transactions and Network tabs and explore the load there.
-    ;; From Inspect's Network use the [Send to query] button to show it in the EQL tab, run it
-    ;; from there. Modify, run again.
+    ;; In both, click on the corresponding line to display details below. In the load's details
+    ;; in the Network tab, press the [Send to query] button to show it in the EQL tab.
+    ;; Run it from the EQL tab. Modify, run again.
     ;; - EQL tab - do [(Re)load Pathom Index] to get auto-completion for the queries and try to type some
     ;; - Index Explorer tab - do [Load index], explore the index (you might need to scroll up on the right side to see the selected thing)
 
