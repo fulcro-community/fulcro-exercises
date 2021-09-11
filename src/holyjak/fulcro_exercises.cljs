@@ -281,7 +281,7 @@
     ;;   (often with the same name but ending with *)
     ;; - Get the current state-map via `(app/current-state app6)` to play with your code in the REPL
     ;; - Use Fulcro Dev Tools to look at the database and Transactions
-    ;; - Check `(hint 6)` is you need help
+    ;; - Check `(hint 6)` if you need help
     ;;
     ;; LEARNING OBJECTIVES:
     ;; - React to user actions
