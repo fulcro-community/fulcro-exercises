@@ -459,6 +459,7 @@
     ,))
 
 ;; TODO Additional exercises:
+;; - computed props for passing a callback from the parent
 ;; - create/delete/create+delete <> tmpids; simulated failure => undo the optimistic change?
 ;; - link queries & more from https://blog.jakubholy.net/2020/fulcro-divergent-ui-data/
 ;; - anything else from the Minim. Fulcro Tutorial should be added?
@@ -466,3 +467,7 @@
 ;;   - Computed props for a callback or parent-visible prop
 ;;   - pre-merge ?! / loading dyn. data for a defsc containing a router x we did not learn routers
 ;;   - Link Query? But not covered by MFT
+;; Other:
+;; @peterdee:  incremental loading of big trees of data. Incremental loading is probably discussed 
+;; adequately in the Developer Guide, but not with recursive queries, and incremental expansion of a UI tree, 
+;; I think. If that seems like too much an edge case, maybe something simpler with trees.
