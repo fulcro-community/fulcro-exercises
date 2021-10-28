@@ -55,7 +55,7 @@ Leverage Fulcro Inspect (especially the DB and perhaps Element tabs), check the 
 
 It might help to close it, reload the page, then open it again.
 
-##### 'shadow-cljs - (relaod failed)' reported in the browser
+##### 'shadow-cljs - (reload failed)' reported in the browser
 
 If shadow-cljs fails because of a coding error then this error is reported in the browser. It may break live reloading, i.e. you might need to hard-reload the page after you fix it.
 
