@@ -16,3 +16,4 @@ resources/public/workspaces/js
 .lsp/sqlite.db
 lsp
 .calva/output-window/output.calva-repl
+.clj-kondo/.cache
