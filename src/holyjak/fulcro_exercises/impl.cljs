@@ -62,7 +62,7 @@
        (println "LOG: Configured the remote" (-> remotes keys first) "for the Fulcro App"))
      (reset! current-app app)
      (println "LOG: Rendering" RootComponent "...")
-     (app/mount! app RootComponent "app" {:initialize-state? (some? initial-db)})
+     (app/mount! app RootComponent "app" #_{:initialize-state? (some? initial-db)}) ; FIXME:!!!!
      app)))
 
 (defn refresh []
