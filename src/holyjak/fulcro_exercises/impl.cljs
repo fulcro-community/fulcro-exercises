@@ -97,5 +97,11 @@
       "7.1b The component class passed to load! holds the query defining what to fetch for each element. Since we are getting a list of teams, the component should be `Team`"
       "7.2 load! does internally transact a mutation and can be called as-is, directly from the :onClick. Use the component's `this` instead of `app7` there."
       "7.3 After you factor out a resolver, remember to add it to the `:resolvers` list, as Pathom needs to be informed of it."
-      "7.4 Use the `:target` option of load! with `(targeting/replace-at ..)`."]})
+      "7.4 Use the `:target` option of load! with `(targeting/replace-at ..)`."]
+   8 ["8a Fix the page's query first"
+      "8b Remember the query must compose up to the parent"
+      "8c Tip: You can make up an arbitrary keyword for the Menu's data in Root, e.g. `:menu` is fine"
+      "8d Query is not enough - you need connection between Root and Menu in the client DB's data"
+      "8e Namely you need `:menu [:component/id ::Menu]` at the top of the Client DB"
+      "8f You can leverage initial-state to set that connection up"]})
 
