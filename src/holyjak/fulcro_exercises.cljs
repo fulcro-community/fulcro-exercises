@@ -250,7 +250,10 @@
     ; (hint 5)
 
     ;; More tasks!
-    ;; 2. Make sure the data is normalized in the DB by adding idents. What will the DB look like?
+    ;; 2. Try to make the data normalized in the DB by adding idents. What do you 
+    ;;    expect the DB to look like? How does it actually look?
+    ;;    (Don't worry if you fail - we will get back to it soon.)
+    ; (hint 5)
     ; (hint 5)
     ; (hint 5)
     ;;

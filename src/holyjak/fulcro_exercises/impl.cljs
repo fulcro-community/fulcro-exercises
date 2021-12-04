@@ -87,6 +87,7 @@
       "5.1b Use `comp/get-query` to get it!"
       "5.2a Normalization: Add idents to all components (but the root). Use the https://book.fulcrologic.com/#_keyword_idents form."
       "5.2b Normalization: Use :team/id, :player/id, :address/city as the idents (same as `(fn [] [:team/id (:team/id <props>)])` ...). But also remember to add the IDs to the queries!"
+      "5.2c Normalization: Your data still is not normalized - and that is expected. We address that in the next exercise, 5.3"
       "5.3 Normalization fix: remember to use comp/get-query in your queries!"
       "5.4a merge-component!: We cannot use Root5 because it has no ident and thus we cannot merge the whole tree. But we can merge a team's data using the correct component."
       "5.4b Inserting the team's data is not enough - we also need to re-establish the 'edge' between it and `:teams`. Look at the client DB and see it is missing! Look at what options merge-component! takes to support this."
