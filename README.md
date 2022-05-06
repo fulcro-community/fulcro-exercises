@@ -29,6 +29,8 @@ Compile the ClojureScript code and start a server for the UI:
 
 NOTE: For Calva, do instead start the REPL from the editor - [run Jack-in](https://calva.io/connect/#jack-in-let-calva-start-the-repl-for-you), selecting _shadow-cljs_ then the `:main` build. Remember to load the page in the browser, see below.
 
+NOTE: For Cursive, in Run/Debug Configurations go to: Add new configuration (+) → Clojure REPL → Remote → Connection type: nREPL | Connection details: Connect to server | Host: localhost | Port: 9001 (Make sure to set the right context module as sometimes it is shown empty)
+
 NOTE: For Emacs, connect to the REPL using `M-x cider-connect-cljs`
 
 **BEWARE**: It might not work if your version of the [Clojure CLI](https://clojure.org/guides/getting_started#_clojure_installer_and_cli_tools) (`clojure --version`) is too old or, possibly, too new. The project has been tested with v.1.10.3.855.
