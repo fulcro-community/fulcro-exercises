@@ -405,14 +405,14 @@
     ;; --- "Backend" resolvers to feed data to load! ---
     (defresolver my-very-awesome-teams [_ _] ; a global resolver
       {::pc/input  #{}
-       ::pc/output [{:teams [:team/id :team/name :team/players]}]}
+       ::pc/output [{:teams [:team/id :team/name {:team/players [:player/id]}]}]}
       {:teams [#:team{:name "Hikers" :id :hikers
                       :players [#:player{:id 1}
                                 #:player{:id 2}]}]})
 
     (defresolver team [_ {id :team/id}] ; an ident resolver
       {::pc/input #{:team/id}
-       ::pc/output [:team/id :team/name :team/players]}
+       ::pc/output [:team/id :team/name {:team/players [:player/id]}]}
       (case id
         :hikers #:team{:id :hikers :name "Hikers"
                        :players [#:player{:id 1} #:player{:id 2}]}))
