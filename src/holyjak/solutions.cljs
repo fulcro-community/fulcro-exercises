@@ -406,7 +406,7 @@
     (defresolver my-very-awesome-teams [_ _] ; a global resolver
       {::pc/input  #{}
        ::pc/output [{:teams [:team/id :team/name {:team/players [:player/id]}]}]}
-      {:teams [#:team{:name "Hikers" :id :hikers
+      {:teams [#:team{:name "Hikers" :id :hikers ; we could also return just [{:team/id :hikers}] and leverage the team resolver below
                       :players [#:player{:id 1}
                                 #:player{:id 2}]}]})
 
